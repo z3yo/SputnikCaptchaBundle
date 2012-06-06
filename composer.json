@@ -1,0 +1,19 @@
+{
+    "name": "sputnik/captcha-bundle",
+    "type": "symfony-bundle",
+    "keywords": [ "captcha" ],
+    "authors": [
+        {
+            "name": "Dmitri Lakachauskis"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Sputnik\\Bundle\\CaptchaBundle": "" }
+    },
+    "target-dir": "Sputnik/Bundle/CaptchaBundle"
+}
+
