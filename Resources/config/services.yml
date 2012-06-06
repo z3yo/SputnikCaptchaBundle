@@ -1,0 +1,11 @@
+parameters:
+
+    sputnik_captcha.form.type.captcha.class: Sputnik\Bundle\CaptchaBundle\Form\Type\CaptchaType
+
+services:
+
+    sputnik_captcha.form.type.captcha:
+        class:     %sputnik_captcha.form.type.captcha.class%
+        arguments: [ @session, %sputnik_captcha.formats% ]
+        tags:
+                   - { name: form.type, alias: sputnik.captcha }

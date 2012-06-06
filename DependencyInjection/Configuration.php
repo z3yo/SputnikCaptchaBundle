@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_DependencyInjection
+ * @author Dmitri Lakachauskis <dmitri@amparo.lv>
  * @author Romuald Bulyshko <romuald@amparo.lv>
  */
 class Configuration implements ConfigurationInterface
@@ -18,35 +19,31 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('sputnik_captcha', 'array');
-
-        /**
-         * Example:
-         *
-         * sputnik_captcha:
-         *     width:  200
-         *     height: 70
-         */
+        $rootNode    = $treeBuilder->root('sputnik_captcha');
         $rootNode
             ->children()
-                ->arrayNode()
-                    ->prototype()
-                        ->scalarNode('width', 200)
-                        ->scalarNode('height', 70)
-                        ->scalarNode('length', 5)
-                        ->scalarNode('alphabet', 'abz')
+                ->arrayNode('formats')
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey(true)
+                    ->defaultValue(array(
+                        'default' => array(
+                            'width'    => 200,
+                            'height'   => 70,
+                            'length'   => 5,
+                            'alphabet' => 'abcdefjhkmnprstuvwxyz23456789',
+                            'font'     => 'VeraSansBold'
+                        )
+                    ))
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('width')->isRequired()->end()
+                            ->scalarNode('height')->isRequired()->end()
+                            ->scalarNode('length')->defaultValue(5)->end()
+                            ->scalarNode('alphabet')->defaultValue('abcdefjhkmnprstuvwxyz23456789')->end()
+                            ->scalarNode('font')->defaultValue('VeraSansBold')->end()
+                        ->end()
                     ->end()
                 ->end()
-
-                ->scalar
-                ->scalarNode('width')->defaultValue(200)->end()
-                ->scalarNode('height')->defaultValue(70)->end()
-
-//                ->scalarNode('keep_value')->defaultValue(true)->end()
-//                 ->scalarNode('as_file')->defaultValue(false)->end()
-//                 ->scalarNode('image_folder')->defaultValue('captcha')->end()
-//                 ->scalarNode('web_path')->defaultValue('%kernel.root_dir%/../web')->end()
-//                 ->scalarNode('expiration')->defaultValue(60)->end()
             ->end()
         ;
         return $treeBuilder;
