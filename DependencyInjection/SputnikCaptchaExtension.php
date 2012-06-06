@@ -26,9 +26,7 @@ class SputnikCaptchaExtension extends Extension
 
         $container->setParameter('sputnik_captcha.formats', $config['formats']);
 
-        /*
         $resources = $container->getParameter('twig.form.resources');
         $container->setParameter('twig.form.resources', array_merge(array('SputnikCaptchaBundle::captcha.html.twig'), $resources));
-        */
     }
 }
