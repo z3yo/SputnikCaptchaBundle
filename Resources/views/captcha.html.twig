@@ -1,6 +1,6 @@
 {% block sputnik_captcha_widget %}
 {% spaceless %}
-    <img src="{{ captcha }}" width="{{ captcha_width }}" height="{{ captcha_height }}" alt="">
+    <img class="captcha" src="{{ captcha }}" width="{{ captcha_width }}" height="{{ captcha_height }}" alt="">
     {{ form_widget(form) }}
 {% endspaceless %}
 {% endblock %}
