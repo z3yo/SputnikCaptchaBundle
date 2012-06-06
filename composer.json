@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*"
+        "symfony/symfony": "2.1.*",
+        "imagine/Imagine": "dev-master"
     },
     "autoload": {
         "psr-0": { "Sputnik\\Bundle\\CaptchaBundle": "" }
