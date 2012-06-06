@@ -6,6 +6,6 @@ services:
 
     sputnik_captcha.form.type.captcha:
         class:     %sputnik_captcha.form.type.captcha.class%
-        arguments: [ @session, %sputnik_captcha.formats% ]
+        arguments: [ @session, %sputnik_captcha.presets%, %sputnik_captcha.fonts% ]
         tags:
                    - { name: form.type, alias: sputnik.captcha }

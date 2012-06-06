@@ -24,7 +24,8 @@ class SputnikCaptchaExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('sputnik_captcha.formats', $config['formats']);
+        $container->setParameter('sputnik_captcha.presets', $config['presets']);
+        $container->setParameter('sputnik_captcha.fonts', $config['fonts']);
 
         $resources = $container->getParameter('twig.form.resources');
         $container->setParameter('twig.form.resources', array_merge(array('SputnikCaptchaBundle::captcha.html.twig'), $resources));

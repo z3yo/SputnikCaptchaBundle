@@ -19,17 +19,20 @@ use Sputnik\Bundle\CaptchaBundle\Validator\CaptchaValidator;
 class CaptchaType extends AbstractType
 {
     private $session;
-    private $formats;
+    private $presets;
+    private $fonts;
     private $sessionKey;
 
     /**
      * @param SessionInterface $session
-     * @param array $formats
+     * @param array $presets
+     * @param array $fonts
      */
-    public function __construct(SessionInterface $session, array $formats)
+    public function __construct(SessionInterface $session, array $presets, array $fonts)
     {
         $this->session = $session;
-        $this->formats = $formats;
+        $this->presets = $presets;
+        $this->fonts   = $fonts;
     }
 
     /**
@@ -47,11 +50,16 @@ class CaptchaType extends AbstractType
     {
         return array(
             'session_key' => null,
-            'format'      => 'default',
+            'preset'      => 'default',
+            'font'        => isset($this->presets['default']) ? $this->presets['default']['font'] : null,
             'width'       => null,
             'height'      => null,
             'length'      => null,
-            'alphabet'    => null
+            'alphabet'    => null,
+            'angle'       => null,
+            'color'       => null,
+            'format'      => null,
+            'bgcolor'     => null
         );
     }
 
@@ -61,7 +69,8 @@ class CaptchaType extends AbstractType
     public function getAllowedOptionValues()
     {
         return array(
-            'format' => array_keys($this->formats)
+            'preset' => array_keys($this->presets),
+            'font'   => array_keys($this->fonts)
         );
     }
 
@@ -91,18 +100,32 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        // override default format options
-        $params = $this->formats[$options['format']];
-        foreach (array('width', 'height', 'length', 'alphabet') as $option) {
+        // Override preset options
+        $params = $this->presets[$options['preset']];
+        foreach (array('width', 'height', 'length', 'alphabet', 'font', 'angle', 'color', 'format') as $option) {
             if (isset($options[$option])) {
                 $params[$option] = $options[$option];
             }
         }
         extract($params);
 
-        $generator = new CaptchaGenerator($alphabet, $length);
-        $view->setVar('captcha', $code = $generator->getCode());
+        // Setup generator
+        $generator = new CaptchaGenerator($alphabet, $length, $this->fonts[$font]);
+        $generator->setColors($color)
+                  ->setFormat($format)
+                  ->setQuality(CaptchaGenerator::QUALITY_HIGH)
+                  ->setMaxFontAngle($angle);
+        if ($bgcolor === CaptchaGenerator::COLOR_TRANSPARENT) {
+            $generator->setTransparentBackground()->setFormat(CaptchaGenerator::FORMAT_PNG);
+        } else {
+            $generator->setBackgroundColor($bgcolor);
+        }
+
+        $view->setVar('captcha', $generator->getDataSource($width, $height));
+        $view->setVar('captcha_width', $width);
+        $view->setVar('captcha_height', $height);
         $view->setVar('value', '');
-        $this->session->set($this->sessionKey, $code);
+
+        $this->session->set($this->sessionKey, $generator->getCode());
     }
 }
