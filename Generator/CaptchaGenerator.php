@@ -27,10 +27,12 @@ class CaptchaGenerator
     private $fontInfo;
     private $code;
     private $backgroundColor;
+    private $shadowColor;
     private $colors  = array();
     private $angle   = 0;
     private $quality = self::QUALITY_NORMAL;
     private $format  = self::FORMAT_PNG;
+    private $shadow  = true;
 
     /**
      * @param string  $chars
@@ -42,6 +44,25 @@ class CaptchaGenerator
         $this->chars    = $chars;
         $this->length   = $length;
         $this->fontInfo = $fontInfo;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFormats()
+    {
+        return array(self::FORMAT_JPEG, self::FORMAT_PNG);
+    }
+
+    /**
+     * @param boolean $flag
+     *
+     * @return CaptchaGenerator
+     */
+    public function setEnableShadow($flag = true)
+    {
+        $this->shadow = $flag;
+        return $this;
     }
 
     /**
@@ -100,6 +121,18 @@ class CaptchaGenerator
     public function addColor($color, $alpha = 0)
     {
         $this->colors[] = new Color($color, $alpha);
+        return $this;
+    }
+
+    /**
+     * @param string $color
+     * @param integer $alpha
+     *
+     * @return CaptchaGenerator
+     */
+    public function setShadowColor($color, $alpha = 0)
+    {
+        $this->shadowColor = new Color($color, $alpha);
         return $this;
     }
 
@@ -200,6 +233,12 @@ class CaptchaGenerator
             // Text position
             $y     = round(($height * $this->quality - $coords->getHeight()) / 2);
             $point = new Point($x, $y);
+
+            // Draw shadow
+            if ($this->shadow) {
+                $shadowFont = new Font($this->fontInfo['file'], $size, $this->shadowColor);
+                $drawing->text($letter, $shadowFont, $point->move($this->quality), $angle);
+            }
 
             // Draw letter
             $drawing->text($letter, $font, $point, $angle);

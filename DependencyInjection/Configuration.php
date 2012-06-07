@@ -27,15 +27,17 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey(true)
                     ->defaultValue(array(
                         'default' => array(
-                            'width'    => 200,
-                            'height'   => 70,
-                            'length'   => 5,
-                            'alphabet' => 'abcdefjhkmnprstuvwxyz23456789',
-                            'font'     => 'verasans',
-                            'angle'    => 25,
-                            'color'    => 'f00',
-                            'format'   => 'png',
-                            'bgcolor'  => 'fff'
+                            'width'        => 200,
+                            'height'       => 70,
+                            'length'       => 5,
+                            'alphabet'     => 'abcdefjhkmnprstuvwxyz23456789',
+                            'font'         => 'verasans',
+                            'angle'        => 25,
+                            'color'        => 'f00',
+                            'format'       => 'png',
+                            'bgcolor'      => 'fff',
+                            'shadow_color' => '000',
+                            'use_shadow'   => true
                         )
                     ))
                     ->prototype('array')
@@ -48,7 +50,9 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('angle')->defaultValue(25)->end()
                             ->scalarNode('color')->defaultValue('f00')->end()
                             ->scalarNode('format')->defaultValue('png')->end()
-                            ->scalarNode('bgcolor')->defaultValue('000')->end()
+                            ->scalarNode('bgcolor')->defaultValue('fff')->end()
+                            ->scalarNode('shadow_color')->defaultValue('000')->end()
+                            ->booleanNode('use_shadow')->defaultTrue()->end()
                         ->end()
                     ->end()
                 ->end()

@@ -49,17 +49,19 @@ class CaptchaType extends AbstractType
     public function getDefaultOptions()
     {
         return array(
-            'session_key' => null,
-            'preset'      => 'default',
-            'font'        => isset($this->presets['default']) ? $this->presets['default']['font'] : null,
-            'width'       => null,
-            'height'      => null,
-            'length'      => null,
-            'alphabet'    => null,
-            'angle'       => null,
-            'color'       => null,
-            'format'      => null,
-            'bgcolor'     => null
+            'session_key'  => null,
+            'preset'       => 'default',
+            'font'         => isset($this->presets['default']) ? $this->presets['default']['font'] : null,
+            'width'        => null,
+            'height'       => null,
+            'length'       => null,
+            'alphabet'     => null,
+            'angle'        => null,
+            'color'        => null,
+            'format'       => null,
+            'bgcolor'      => null,
+            'shadow_color' => null,
+            'use_shadow'   => null
         );
     }
 
@@ -102,7 +104,7 @@ class CaptchaType extends AbstractType
     {
         // Override preset options
         $params = $this->presets[$options['preset']];
-        foreach (array('width', 'height', 'length', 'alphabet', 'font', 'angle', 'color', 'format') as $option) {
+        foreach (array('width', 'height', 'length', 'alphabet', 'font', 'angle', 'color', 'format', 'shadow_color', 'use_shadow') as $option) {
             if (isset($options[$option])) {
                 $params[$option] = $options[$option];
             }
@@ -113,8 +115,9 @@ class CaptchaType extends AbstractType
         $generator = new CaptchaGenerator($alphabet, $length, $this->fonts[$font]);
         $generator->setColors($color)
                   ->setFormat($format)
-                  ->setQuality(CaptchaGenerator::QUALITY_HIGH)
-                  ->setMaxFontAngle($angle);
+                  ->setMaxFontAngle($angle)
+                  ->setShadowColor($params['shadow_color'])
+                  ->setEnableShadow($params['use_shadow']);
         if ($bgcolor === CaptchaGenerator::COLOR_TRANSPARENT) {
             $generator->setTransparentBackground()->setFormat(CaptchaGenerator::FORMAT_PNG);
         } else {
