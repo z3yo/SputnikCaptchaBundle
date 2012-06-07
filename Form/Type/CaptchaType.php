@@ -2,6 +2,8 @@
 
 namespace Sputnik\Bundle\CaptchaBundle\Form\Type;
 
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
@@ -46,34 +48,28 @@ class CaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $presets = $this->presets;
+        $resolver->setDefaults(array(
             'session_key'  => null,
             'preset'       => 'default',
-            'font'         => isset($this->presets['default']) ? $this->presets['default']['font'] : null,
-            'width'        => null,
-            'height'       => null,
-            'length'       => null,
-            'alphabet'     => null,
-            'angle'        => null,
-            'color'        => null,
-            'format'       => null,
-            'bgcolor'      => null,
-            'shadow_color' => null,
-            'use_shadow'   => null
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues()
-    {
-        return array(
+            'font'         => function(Options $options) use ($presets) { return $presets[$options['preset']]['font']; },
+            'width'        => function(Options $options) use ($presets) { return $presets[$options['preset']]['width']; },
+            'height'       => function(Options $options) use ($presets) { return $presets[$options['preset']]['height']; },
+            'length'       => function(Options $options) use ($presets) { return $presets[$options['preset']]['length']; },
+            'alphabet'     => function(Options $options) use ($presets) { return $presets[$options['preset']]['alphabet']; },
+            'angle'        => function(Options $options) use ($presets) { return $presets[$options['preset']]['angle']; },
+            'color'        => function(Options $options) use ($presets) { return $presets[$options['preset']]['color']; },
+            'format'       => function(Options $options) use ($presets) { return $presets[$options['preset']]['format']; },
+            'bgcolor'      => function(Options $options) use ($presets) { return $presets[$options['preset']]['bgcolor']; },
+            'shadow_color' => function(Options $options) use ($presets) { return $presets[$options['preset']]['shadow_color']; },
+            'use_shadow'   => function(Options $options) use ($presets) { return $presets[$options['preset']]['use_shadow']; }
+        ));
+        $resolver->setAllowedValues(array(
             'preset' => array_keys($this->presets),
             'font'   => array_keys($this->fonts)
-        );
+        ));
     }
 
     /**
@@ -102,31 +98,22 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        // Override preset options
-        $params = $this->presets[$options['preset']];
-        foreach (array('width', 'height', 'length', 'alphabet', 'font', 'angle', 'color', 'format', 'shadow_color', 'use_shadow') as $option) {
-            if (isset($options[$option])) {
-                $params[$option] = $options[$option];
-            }
-        }
-        extract($params);
-
         // Setup generator
-        $generator = new CaptchaGenerator($alphabet, $length, $this->fonts[$font]);
-        $generator->setColors($color)
-                  ->setFormat($format)
-                  ->setMaxFontAngle($angle)
-                  ->setShadowColor($params['shadow_color'])
-                  ->setEnableShadow($params['use_shadow']);
-        if ($bgcolor === CaptchaGenerator::COLOR_TRANSPARENT) {
+        $generator = new CaptchaGenerator($options['alphabet'], $options['length'], $this->fonts[$options['font']]);
+        $generator->setColors($options['color'])
+                  ->setFormat($options['format'])
+                  ->setMaxFontAngle($options['angle'])
+                  ->setShadowColor($options['shadow_color'])
+                  ->setEnableShadow($options['use_shadow']);
+        if ($options['bgcolor'] === CaptchaGenerator::COLOR_TRANSPARENT) {
             $generator->setTransparentBackground()->setFormat(CaptchaGenerator::FORMAT_PNG);
         } else {
-            $generator->setBackgroundColor($bgcolor);
+            $generator->setBackgroundColor($options['bgcolor']);
         }
 
-        $view->setVar('captcha', $generator->getDataSource($width, $height));
-        $view->setVar('captcha_width', $width);
-        $view->setVar('captcha_height', $height);
+        $view->setVar('captcha', $generator->getDataSource($options['width'], $options['height']));
+        $view->setVar('captcha_width', $options['width']);
+        $view->setVar('captcha_height', $options['height']);
         $view->setVar('value', '');
 
         $this->session->set($this->sessionKey, $generator->getCode());
