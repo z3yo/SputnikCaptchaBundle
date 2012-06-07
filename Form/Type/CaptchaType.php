@@ -25,8 +25,8 @@ class CaptchaType extends AbstractType
 
     /**
      * @param SessionInterface $session
-     * @param array $presets
-     * @param array $fonts
+     * @param array            $presets
+     * @param array            $fonts
      */
     public function __construct(SessionInterface $session, array $presets, array $fonts)
     {

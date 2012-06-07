@@ -65,6 +65,7 @@ class CaptchaGenerator
     public function setEnableShadow($flag = true)
     {
         $this->shadow = $flag;
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ class CaptchaGenerator
     public function setQuality($quality)
     {
         $this->quality = $quality;
+
         return $this;
     }
 
@@ -87,6 +89,7 @@ class CaptchaGenerator
     public function setFormat($format)
     {
         $this->format = $format;
+
         return $this;
     }
 
@@ -98,6 +101,7 @@ class CaptchaGenerator
     public function setMaxFontAngle($angle)
     {
         $this->angle = $angle;
+
         return $this;
     }
 
@@ -112,11 +116,12 @@ class CaptchaGenerator
         foreach ((array) $colors as $color) {
             $this->addColor($color);
         }
+
         return $this;
     }
 
     /**
-     * @param string $color
+     * @param string  $color
      * @param integer $alpha
      *
      * @return CaptchaGenerator
@@ -124,11 +129,12 @@ class CaptchaGenerator
     public function addColor($color, $alpha = 0)
     {
         $this->colors[] = new Color($color, $alpha);
+
         return $this;
     }
 
     /**
-     * @param string $color
+     * @param string  $color
      * @param integer $alpha
      *
      * @return CaptchaGenerator
@@ -136,11 +142,12 @@ class CaptchaGenerator
     public function setShadowColor($color, $alpha = 0)
     {
         $this->shadowColor = new Color($color, $alpha);
+
         return $this;
     }
 
     /**
-     * @param string $color
+     * @param string  $color
      * @param integer $alpha
      *
      * @return CaptchaGenerator
@@ -148,6 +155,7 @@ class CaptchaGenerator
     public function setBackgroundColor($color, $alpha = 0)
     {
         $this->backgroundColor = new Color($color, $alpha);
+
         return $this;
     }
 
@@ -167,6 +175,7 @@ class CaptchaGenerator
         if (null === $this->code) {
             $this->code = $this->generateCode();
         }
+
         return $this->code;
     }
 

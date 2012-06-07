@@ -20,7 +20,7 @@ class CaptchaValidator implements FormValidatorInterface
 
     /**
      * @param SessionInterface $session
-     * @param string $key
+     * @param string           $key
      */
     public function __construct(SessionInterface $session, $key)
     {
@@ -52,6 +52,7 @@ class CaptchaValidator implements FormValidatorInterface
         if ($this->session->has($this->key)) {
             $result = $this->session->get($this->key);
         }
+
         return $result;
     }
 }
