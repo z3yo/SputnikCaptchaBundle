@@ -2,11 +2,14 @@
 
 namespace Sputnik\Bundle\CaptchaBundle\Generator;
 
+use Imagine\Filter\Transformation;
 use Imagine\Image\Point;
 use Imagine\Image\Color;
 use Imagine\Image\Box;
 use Imagine\Gd\Font;
 use Imagine\Gd\Imagine;
+use Sputnik\Bundle\CaptchaBundle\Imagine\Filter\WaveFilter;
+use Sputnik\Bundle\CaptchaBundle\Imagine\Filter\BlurFilter;
 
 /**
  * @category SputnikCaptchaBundle
@@ -246,6 +249,10 @@ class CaptchaGenerator
             // Advance
             $x = $x + $coords->getWidth() + $this->fontInfo['spacing'] * $this->quality;
         }
+
+        $transform = new Transformation($imagine);
+        $transform->applyFilter($image, new BlurFilter());
+        $transform->applyFilter($image, new WaveFilter());
 
         if ($image->getSize()->getWidth() !== $width) {
             $image->resize(new Box($width, $height));
