@@ -18,6 +18,8 @@ class BlurFilter implements FilterInterface
      */
     public function apply(ImageInterface $image)
     {
+        return $image;
+
         /*
         if (function_exists('imagefilter')) {
             imagefilter($image->getResource(), IMG_FILTER_GAUSSIAN_BLUR);

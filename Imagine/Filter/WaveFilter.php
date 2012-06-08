@@ -18,5 +18,6 @@ class WaveFilter implements FilterInterface
      */
     public function apply(ImageInterface $image)
     {
+        return $image;
     }
 }

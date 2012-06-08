@@ -260,8 +260,9 @@ class CaptchaGenerator
         }
 
         $transform = new Transformation($imagine);
-        $transform->applyFilter($image, new BlurFilter());
-        $transform->applyFilter($image, new WaveFilter());
+        $transform->add(new BlurFilter())
+                  ->add(new WaveFilter())
+                  ->apply($image);
 
         if ($image->getSize()->getWidth() !== $width) {
             $image->resize(new Box($width, $height));
