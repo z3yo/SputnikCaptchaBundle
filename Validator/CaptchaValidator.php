@@ -36,7 +36,7 @@ class CaptchaValidator implements FormValidatorInterface
         $code     = $form->getData();
         $excepted = $this->getExceptedCode();
 
-        if (strtolower($code) !== strtolower($excepted)) {
+        if (!$excepted || (strtolower($code) !== strtolower($excepted))) {
             $form->addError(new FormError('invalid captcha value'));
         }
 
