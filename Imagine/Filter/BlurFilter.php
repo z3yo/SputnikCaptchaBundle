@@ -9,7 +9,6 @@ use Imagine\Filter\FilterInterface;
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_Imagine
  * @subpackage Filter
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
  */
 class BlurFilter implements FilterInterface
 {

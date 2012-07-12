@@ -10,8 +10,6 @@ use Symfony\Component\Config\FileLocator;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_DependencyInjection
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
- * @author Romuald Bulyshko <romuald@amparo.lv>
  */
 class SputnikCaptchaExtension extends Extension
 {

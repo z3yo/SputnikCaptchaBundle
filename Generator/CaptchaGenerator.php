@@ -14,7 +14,6 @@ use Sputnik\Bundle\CaptchaBundle\Imagine\Filter\BlurFilter;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_Generator
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
  */
 class CaptchaGenerator
 {

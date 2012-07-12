@@ -10,8 +10,6 @@ use Symfony\Component\Form\FormValidatorInterface;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_Validator
- * @author Romuald Bulyshko <romuald@amparo.lv>
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
  */
 class CaptchaValidator implements FormValidatorInterface
 {

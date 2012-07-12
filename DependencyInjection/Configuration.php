@@ -8,8 +8,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_DependencyInjection
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
- * @author Romuald Bulyshko <romuald@amparo.lv>
  */
 class Configuration implements ConfigurationInterface
 {

@@ -15,8 +15,6 @@ use Sputnik\Bundle\CaptchaBundle\Validator\CaptchaValidator;
 /**
  * @category SputnikCaptchaBundle
  * @package SputnikCaptchaBundle_Type
- * @author Dmitri Lakachauskis <dmitri@amparo.lv>
- * @author Romuald Bulyshko <romuald@amparo.lv>
  */
 class CaptchaType extends AbstractType
 {
