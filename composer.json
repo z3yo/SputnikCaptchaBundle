@@ -8,7 +8,6 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
         "imagine/Imagine": "dev-master"
     },
