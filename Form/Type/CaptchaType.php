@@ -5,7 +5,7 @@ namespace Sputnik\Bundle\CaptchaBundle\Form\Type;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -94,7 +94,7 @@ class CaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         // Setup generator
         $generator = new CaptchaGenerator($options['alphabet'], $options['length'], $this->fonts[$options['font']]);
@@ -109,10 +109,10 @@ class CaptchaType extends AbstractType
             $generator->setBackgroundColor($options['bgcolor']);
         }
 
-        $view->setVar('captcha', $generator->getDataSource($options['width'], $options['height']));
-        $view->setVar('captcha_width', $options['width']);
-        $view->setVar('captcha_height', $options['height']);
-        $view->setVar('value', '');
+        $view->vars['captcha']        = $generator->getDataSource($options['width'], $options['height']);
+        $view->vars['captcha_width']  = $options['width'];
+        $view->vars['captcha_height'] = $options['height'];
+        $view->vars['value']          = '';
 
         $this->session->set($this->sessionKey, $generator->getCode());
     }
